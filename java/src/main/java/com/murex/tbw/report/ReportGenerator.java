@@ -31,7 +31,8 @@ public class ReportGenerator {
 //          totalAmount += invoice.computeTotalAmount();
 
 //          FIX: The above bug was fixed by the below 2 lines of code
-            totalAmount += CurrencyConverter.toUSD(invoice.computeTotalAmount(), invoice.getCountry().getCurrency());
+//            totalAmount += CurrencyConverter.toUSD(invoice.computeTotalAmount(), invoice.getCountry().getCurrency());
+            totalAmount += invoice.computeTotalAmount();
         }
         return getRoundedAmount(totalAmount);
     }
