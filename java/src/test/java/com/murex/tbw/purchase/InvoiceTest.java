@@ -4,12 +4,18 @@ import com.google.common.collect.Lists;
 import com.murex.tbw.domain.book.Author;
 import com.murex.tbw.domain.book.Genre;
 import com.murex.tbw.domain.book.Novel;
+import com.murex.tbw.domain.book.NovelTestDataBuilder;
 import com.murex.tbw.domain.country.Country;
 import com.murex.tbw.domain.country.Currency;
 import com.murex.tbw.domain.country.Language;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.murex.tbw.domain.book.NovelTestDataBuilder.aNovel;
+import static com.murex.tbw.domain.country.TestCountries.USA;
+import static com.murex.tbw.purchase.InvoiceTestDataBuilder.anInvoice;
+import static com.murex.tbw.purchase.PurchasedBookTestDataBuilder.aPurchasedBook;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InvoiceTest {
     @Test
@@ -34,10 +40,18 @@ class InvoiceTest {
 
     @Test
     void Test_Data_Builders_Constraint_Applies_tax_rules_when_computing_total_amount() {
+
         // Using the Test Data Builder pattern:
         // Instantiate an Invoice sent to USA
         // Add it a purchased novel costing 50
-        // Assert the total amount of the invoice is 56,35 : 15% of taxes plus a 2% reduction on novels
+        Invoice invoice =
+                anInvoice()
+                        .from(USA)
+                        .with(
+                                aPurchasedBook()
+                                        .of(aNovel().costing(50.0))).build();
+
+        assertEquals(56.35, invoice.computeTotalAmount());
     }
 
     @Test
